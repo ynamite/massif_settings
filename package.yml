@@ -1,0 +1,39 @@
+package: massif_settings
+version: '1.0.0'
+author: Yves Torres (ynamite)
+supportpage: https://massif.ch/
+
+requires:
+    redaxo: '^5.0'
+
+page:
+    title: Stammdaten
+    perm: massif_settings[]
+    icon: rex-icon fa-gears
+    subpages:
+        address:
+            title: 'Stammdaten'
+            icon: 'fa fa-map-pin'
+            fields:
+                [
+                    { name: 'firma', label: 'Name' },
+                    { name: 'strasse', label: 'Strasse' },
+                    { name: 'plz', label: 'PLZ' },
+                    { name: 'ort', label: 'Ort' },
+                    { name: 'kanton_code', label: 'Kanton-Code' },
+                    { name: 'land', label: 'Land' },
+                    { name: 'land_code', label: 'Land-Code' },
+                    { name: 'e-mail', label: 'E-Mail' },
+                    { name: 'phone', label: 'Telefon' },
+                    { name: 'google_maps_link', label: 'Google Maps Link' },
+                    {
+                        name: 'geo lat.',
+                        label: 'Geo Lat.',
+                        style_input: 'font-weight:bold',
+                    },
+                    {
+                        name: 'geo long.',
+                        label: 'Geo Long.',
+                        style_input: 'font-weight:bold',
+                    },
+                ]
