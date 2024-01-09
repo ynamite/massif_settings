@@ -10,12 +10,14 @@ if (/*!rex::isBackend() &&*/$search_it_indexer == "") {
 
     rex_extension::register('OUTPUT_FILTER', function (\rex_extension_point $ep) {
 
-        $be_page = \rex_be_controller::getCurrentPageObject();
-        if ($be_page) {
-            $key = $be_page->getFullKey();
-            if ($key === 'massif_settings/address' || ($key === 'content/edit' && rex_request('function', 'string') === 'edit')) {
-                $ep->setSubject($ep->getSubject());
-                return;
+        if (rex::isBackend()) {
+            $be_page = \rex_be_controller::getCurrentPageObject();
+            if ($be_page) {
+                $key = $be_page->getFullKey();
+                if ($key === 'massif_settings/address' || ($key === 'content/edit' && rex_request('function', 'string') === 'edit')) {
+                    $ep->setSubject($ep->getSubject());
+                    return;
+                }
             }
         }
 
