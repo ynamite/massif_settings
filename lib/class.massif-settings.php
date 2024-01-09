@@ -26,7 +26,12 @@ class massif_settings
                 $f = strtolower($field['name']);
                 $id = $ns . '_' . $f;
 
-                $val = rex_Formatter::nl2br($addon->getConfig($ns . '_' . rex_string::normalize($f)));
+                $config = $addon->getConfig($ns . '_' . rex_string::normalize($f));
+                if ($config === null)
+                    continue;
+
+
+                $val = rex_Formatter::nl2br($config);
 
                 if ($val) {
 
