@@ -4,36 +4,90 @@ author: Yves Torres (ynamite)
 supportpage: https://massif.ch/
 
 requires:
-    redaxo: '^5.0'
+  redaxo: '^5.0'
 
 page:
-    title: Stammdaten
-    perm: massif_settings[]
-    icon: rex-icon fa-gears
-    subpages:
-        address:
-            title: 'Stammdaten'
-            icon: 'fa fa-map-pin'
-            fields:
-                [
-                    { name: 'firma', label: 'Name' },
-                    { name: 'strasse', label: 'Strasse' },
-                    { name: 'plz', label: 'PLZ' },
-                    { name: 'ort', label: 'Ort' },
-                    { name: 'kanton_code', label: 'Kanton-Code' },
-                    { name: 'land', label: 'Land' },
-                    { name: 'land_code', label: 'Land-Code' },
-                    { name: 'e-mail', label: 'E-Mail' },
-                    { name: 'phone', label: 'Telefon' },
-                    { name: 'google_maps_link', label: 'Google Maps Link' },
-                    {
-                        name: 'geo lat.',
-                        label: 'Geo Lat.',
-                        style_input: 'font-weight:bold',
-                    },
-                    {
-                        name: 'geo long.',
-                        label: 'Geo Long.',
-                        style_input: 'font-weight:bold',
-                    },
-                ]
+  title: Stammdaten
+  perm: massif_settings[]
+  icon: rex-icon fa-gears
+  subpages:
+    address:
+      title: 'Stammdaten'
+      icon: 'fa fa-map-pin'
+      fields:
+        [
+          { name: 'firma', label: 'Name' },
+          { name: 'strasse', label: 'Strasse' },
+          { name: 'plz', label: 'PLZ' },
+          { name: 'ort', label: 'Ort' },
+          { name: 'kanton_code', label: 'Kanton-Code' },
+          { name: 'land', label: 'Land' },
+          { name: 'land_code', label: 'Land-Code' },
+          { name: 'e-mail', label: 'E-Mail' },
+          { name: 'phone', label: 'Telefon' },
+          { name: 'google_maps_link', label: 'Google Maps Link' },
+          {
+            name: 'geo lat.',
+            label: 'Geo Lat.',
+            style_input: 'font-weight:bold'
+          },
+          {
+            name: 'geo long.',
+            label: 'Geo Long.',
+            style_input: 'font-weight:bold'
+          }
+        ]
+    favicon:
+      title: 'Favicon'
+      icon: 'fa fa-icons'
+      fields:
+        [
+          { name: 'master', label: 'Master img' },
+          { name: 'name', label: 'Name' },
+          {
+            name: 'desktop_bg',
+            label: 'Desktop background color',
+            class: 'minicolors-massif'
+          },
+          {
+            name: 'desktop_radius',
+            label: 'Desktop radius',
+            style: 'width: 60px'
+          },
+          {
+            name: 'desktop_scale',
+            label: 'Desktop scale',
+            style: 'width: 60px'
+          },
+          {
+            name: 'ios_bg',
+            label: 'iOS background color',
+            class: 'minicolors-massif'
+          },
+          { name: 'ios_margin', label: 'iOS margin', style: 'width: 60px' },
+          {
+            name: 'win_bg',
+            label: 'Windows background color',
+            class: 'minicolors-massif'
+          },
+          {
+            name: 'android_margin',
+            label: 'Android margin',
+            style: 'width: 60px'
+          },
+          {
+            name: 'android_bg',
+            label: 'Android background color',
+            class: 'minicolors-massif'
+          },
+          {
+            name: 'android_theme',
+            label: 'Android theme color',
+            class: 'minicolors-massif'
+          },
+          {
+            name: 'safari_theme',
+            label: 'Safari theme color',
+            class: 'minicolors-massif'
+          }
+        ]

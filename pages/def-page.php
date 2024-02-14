@@ -1,5 +1,6 @@
 <?php
 
+use Ynamite\MassifSettings\ConfigForm;
 
 $key = rex_be_controller::getCurrentPageObject()->getKey();
 $package = $this->getProperty('package') . '-';
@@ -8,7 +9,9 @@ $be_page = \rex_be_controller::getCurrentPageObject();
 
 $fields = $pages['subpages'][$key]['fields'];
 
-$form = rex_config_form::factory($this->getProperty('package'));
+
+$form = ConfigForm::factory($this->getProperty('package'));
+
 
 foreach ($fields as $f) {
     if (isset($f['active']) && $f['active'] === false)
@@ -47,9 +50,38 @@ foreach ($fields as $f) {
         //$field->setNotice('test');
     }
 }
+$content = '';
+if ($be_page->getKey() == 'favicon' && !class_exists('Ynamite\ViteRex\ViteRex')) {
+    $content .= '<div class="alert alert-info" role="alert">Requires ViteRex!</div>';
+} else {
+
+    if ($be_page->getKey() == 'favicon') {
+        $icons = [
+            'favicon-16x16.png',
+            'favicon-32x32.png',
+            'favicon.ico',
+            'mstile-150x150.png',
+            'android-chrome-192x192.png',
+            'android-chrome-512x512.png',
+            'apple-touch-icon.png',
+            'safari-pinned-tab.svg',
+        ];
+        $content .= '<div style="display: flex; gap: 10px; margin-bottom: 40px;">';
+        foreach ($icons as $icon) {
+            $content .= '<div style="display: flex; text-align: center; align-items:end;">';
+            $content .= '<div>';
+            $content .= '<img src="' . rex_url::base() . $icon . '" class="thumbnail" style="max-width: 100px; display: inline-block;"><br /><span style="font-size: 0.7em">' . $icon . '</span>';
+            $content .= '</div>';
+            $content .= '</div>';
+        }
+        $content .= '</div>';
+    }
+
+    $content .= $form->get();
+}
 
 $fragment = new rex_fragment();
 $fragment->setVar('class', 'edit', false);
 $fragment->setVar('title', $be_page->getTitle(), false);
-$fragment->setVar('body', $form->get(), false);
+$fragment->setVar('body', $content, false);
 echo $fragment->parse('core/page/section.php');

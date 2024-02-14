@@ -1,10 +1,4 @@
 <?php
-/*
-if (!$this->hasConfig()) {
-	
-	$aggregators = $this->getProperty('aggregators');
-	
-	foreach($aggregators as $a) {
-		$this->setConfig(strtolower($a['name']), $a['default']);
-	}
-}*/
+
+// copy data directory
+rex_dir::copy($this->getPath('data'), $this->getDataPath());

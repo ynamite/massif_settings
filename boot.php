@@ -1,5 +1,10 @@
 <?php
 
+namespace Ynamite\MassifSettings;
+
+use rex;
+use rex_extension;
+
 $search_it_indexer = rex_get('search_it_build_index', 'string');
 $search_it_highlighter = rex_get('search_highlighter', 'string');
 if ($search_it_indexer == "" && $search_it_highlighter != "") {
@@ -21,7 +26,7 @@ if (/*!rex::isBackend() &&*/$search_it_indexer == "") {
             }
         }
 
-        $html = massif_settings::replaceStrings($ep->getSubject());
+        $html = Utils::replaceStrings($ep->getSubject());
 
         $ep->setSubject($html);
 
