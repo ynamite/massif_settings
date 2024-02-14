@@ -20,7 +20,8 @@ class ConfigForm extends rex_config_form
 
 
     if ($be_page->getKey() == 'favicon') {
-      \Ynamite\MassifSettings\Utils::beGenerateFaviconDataFromFields($fields);
+      return \Ynamite\MassifSettings\Utils::beGenerateFaviconDataFromFields($fields);
     }
+    return true;
   }
 }

@@ -80,12 +80,16 @@ class Utils
                     rex_config::set($addonName, $name, $value);
                 }
                 if ($field['name'] == 'desktop_bg' && $value === '') {
-                    $jsonData["design"]["desktopBrowser"]["backgroundColor"] = 'raw';
+                    $jsonData["design"]["desktopBrowser"]["design"] = 'raw';
+                } else {
+                    $jsonData["design"]["desktopBrowser"]["design"] = 'background';
                 }
             }
         }
         $json = rex_file::put($addon->getDataPath('faviconDescription.json'), json_encode($jsonData, JSON_PRETTY_PRINT));
-        self::generateFaviconData();
+        if (self::generateFaviconData()) {
+            return true;
+        }
     }
 
     public static function replaceStrings($html)
