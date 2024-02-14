@@ -14,7 +14,10 @@
       }
     },
     "desktopBrowser": {
-      "design": "raw"
+      "design": "raw",
+      "backgroundColor": "",
+      "backgroundRadius": 0.45,
+      "imageScale": 0.8
     },
     "windows": {
       "pictureAspect": "noChange",
