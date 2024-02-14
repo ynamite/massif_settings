@@ -70,7 +70,7 @@ if ($be_page->getKey() == 'favicon' && !class_exists('Ynamite\ViteRex\ViteRex'))
         foreach ($icons as $icon) {
             $content .= '<div style="display: flex; text-align: center; align-items:end;">';
             $content .= '<div>';
-            $content .= '<img src="' . rex_url::base() . $icon . '" class="thumbnail" style="max-width: 100px; display: inline-block;"><br /><span style="font-size: 0.7em">' . $icon . '</span>';
+            $content .= '<img src="' . rex_url::base() . $icon . '?time=' . time() . '" class="thumbnail" style="max-width: 100px; display: inline-block;"><br /><span style="font-size: 0.7em">' . $icon . '</span>';
             $content .= '</div>';
             $content .= '</div>';
         }
