@@ -10,7 +10,7 @@ $be_page = \rex_be_controller::getCurrentPageObject();
 $fields = $pages['subpages'][$key]['fields'];
 
 
-$form = ConfigForm::factory($this->getProperty('package'));
+$form = rex_config_form::factory($this->getProperty('package'));
 
 
 foreach ($fields as $f) {
@@ -45,40 +45,16 @@ foreach ($fields as $f) {
                 $field->setAttribute('data-' . $k, $v);
             }
         }
-
-        $field->setLabel($f['label'] . '<br><small class="help-block rex-note" style="display:inline-block; font-weight: normal; margin: 0;">{{' . $name . '}}</small>');
+        $label = $f['label'];
+        if ($be_page->getKey() != 'favicon') {
+            $label .= '<br><small class="help-block rex-note" style="display:inline-block; font-weight: normal; margin: 0;">{{' . $name . '}}</small>';
+        }
+        $field->setLabel($label);
         //$field->setNotice('test');
     }
 }
 $content = '';
-if ($be_page->getKey() == 'favicon' && !class_exists('Ynamite\ViteRex\ViteRex')) {
-    $content .= '<div class="alert alert-info" role="alert">Requires ViteRex!</div>';
-} else {
-
-    if ($be_page->getKey() == 'favicon') {
-        $icons = [
-            'favicon-16x16.png',
-            'favicon-32x32.png',
-            'favicon.ico',
-            'mstile-150x150.png',
-            'android-chrome-192x192.png',
-            'android-chrome-512x512.png',
-            'apple-touch-icon.png',
-            'safari-pinned-tab.svg',
-        ];
-        $content .= '<div style="display: flex; gap: 10px; margin-bottom: 40px;">';
-        foreach ($icons as $icon) {
-            $content .= '<div style="display: flex; text-align: center; align-items:end;">';
-            $content .= '<div>';
-            $content .= '<img src="' . rex_url::base() . $icon . '?time=' . time() . '" class="thumbnail" style="max-width: 100px; display: inline-block;"><br /><span style="font-size: 0.7em">' . $icon . '</span>';
-            $content .= '</div>';
-            $content .= '</div>';
-        }
-        $content .= '</div>';
-    }
-
-    $content .= $form->get();
-}
+$content .= $form->get();
 
 $fragment = new rex_fragment();
 $fragment->setVar('class', 'edit', false);
