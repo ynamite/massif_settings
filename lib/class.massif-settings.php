@@ -5,7 +5,7 @@ namespace Ynamite\MassifSettings;
 use rex_addon;
 use rex_string;
 use rex_Formatter;
-use massif_utils;
+use Ynamite\Massif\Utils as MassifUtils;
 
 class Utils
 {
@@ -44,17 +44,17 @@ class Utils
 
                     if ($f == 'phone') {
                         $search[] = '{{' . $id . '_html}}';
-                        $replace[] = '<a href="tel:' . massif_utils::formatPhone($val) . '" data-no-swup class="contact-link phone-number">' . $val . '</a>';
+                        $replace[] = '<a href="tel:' . MassifUtils::formatPhone($val) . '" data-no-swup class="contact-link phone-number">' . $val . '</a>';
                     }
                     if ($f == 'hotline') {
                         $search[] = '{{' . $id . '_raw}}';
-                        $replace[] = massif_utils::formatPhone($val);
+                        $replace[] = MassifUtils::formatPhone($val);
                         $search[] = '{{' . $id . '_html}}';
-                        $replace[] = '<a href="tel:' . massif_utils::formatPhone($val) . '" data-no-swup class="contact-link phone-number ' . $f . '-number">' . $val . '</a>';
+                        $replace[] = '<a href="tel:' . MassifUtils::formatPhone($val) . '" data-no-swup class="contact-link phone-number ' . $f . '-number">' . $val . '</a>';
                     }
                     if ($f == 'fax') {
                         $search[] = '{{' . $id . '_html}}';
-                        $replace[] = '<a href="tel:' . massif_utils::formatPhone($val) . '" data-no-swup class="contact-link phone-number">Fax ' . $val . '</a>';
+                        $replace[] = '<a href="tel:' . MassifUtils::formatPhone($val) . '" data-no-swup class="contact-link phone-number">Fax ' . $val . '</a>';
                     }
                     if ($f == 'linkedin') {
                         $search[] = '{{' . $id . '_html}}';
