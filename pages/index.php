@@ -1,6 +1,6 @@
 <?php
 
-$massif_be = new Ynamite\Massif_be\package($this);
+$massif_be = new Ynamite\Massif_BE\Package($this);
 echo $massif_be->getPage();
 
 ?>

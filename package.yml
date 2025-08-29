@@ -1,10 +1,10 @@
 package: massif_settings
-version: "1.0.0"
+version: '1.0.0'
 author: Yves Torres (ynamite)
 supportpage: https://massif.ch/
 
 requires:
-  redaxo: "^5.0"
+  redaxo: '^5.0'
 
 page:
   title: Stammdaten
@@ -12,54 +12,54 @@ page:
   icon: rex-icon fa-gears
   subpages:
     address:
-      title: "Stammdaten"
-      icon: "fa fa-map-pin"
+      title: 'Stammdaten'
+      icon: 'fa fa-map-pin'
       fields:
         [
-          { name: "firma", label: "Name" },
-          { name: "strasse", label: "Strasse" },
-          { name: "plz", label: "PLZ" },
-          { name: "ort", label: "Ort" },
-          { name: "kanton_code", label: "Kanton-Code" },
-          { name: "land", label: "Land" },
-          { name: "land_code", label: "Land-Code" },
-          { name: "e-mail", label: "E-Mail" },
-          { name: "phone", label: "Telefon" },
+          { name: 'firma', label: 'Name' },
+          { name: 'strasse', label: 'Strasse' },
+          { name: 'plz', label: 'PLZ' },
+          { name: 'ort', label: 'Ort' },
+          { name: 'kanton_code', label: 'Kanton-Code' },
+          { name: 'land', label: 'Land' },
+          { name: 'land_code', label: 'Land-Code' },
+          { name: 'e-mail', label: 'E-Mail' },
+          { name: 'phone', label: 'Telefon' }
         ]
     google:
-      title: "Google"
-      icon: "fa fa-location-dot"
+      title: 'Google'
+      icon: 'fa fa-location-dot'
       fields:
         [
-          { name: "google_maps_link", label: "Google Maps Link" },
+          { name: 'maps_link', label: 'Google Maps Link' },
           {
-            name: "geo lat.",
-            label: "Geo Lat.",
-            style_input: "font-weight:bold",
+            name: 'geo lat.',
+            label: 'Geo Lat.',
+            style_input: 'font-weight:bold'
           },
           {
-            name: "geo long.",
-            label: "Geo Long.",
-            style_input: "font-weight:bold",
-          },
+            name: 'geo long.',
+            label: 'Geo Long.',
+            style_input: 'font-weight:bold'
+          }
         ]
     social:
-      title: "Social Media"
-      icon: "fa fa-linkedin"
+      title: 'Social Media'
+      icon: 'fa fa-linkedin'
       fields:
         [
-          { name: "instagram", label: "Instagram" },
-          { name: "linkedin", label: "LinkedIn" },
+          { name: 'instagram', label: 'Instagram' },
+          { name: 'linkedin', label: 'LinkedIn' }
         ]
     settings:
-      title: "Einstellungen"
-      icon: "fa fa-cog"
+      title: 'Einstellungen'
+      icon: 'fa fa-cog'
       fields:
         [
           {
-            name: "accent_color",
-            label: "Akzentfarbe",
-            class: "minicolors-massif",
-            default: "#ff269e",
-          },
+            name: 'accent_color',
+            label: 'Akzentfarbe',
+            class: 'minicolors-massif',
+            default: '#ff269e'
+          }
         ]

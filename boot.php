@@ -22,7 +22,7 @@ if (/*!rex::isBackend() &&*/$search_it_indexer == "") {
             $be_page = \rex_be_controller::getCurrentPageObject();
             if ($be_page) {
                 $key = $be_page->getFullKey();
-                if ($key === 'massif_settings/address' || ($key === 'content/edit' && rex_request('function', 'string') === 'edit')) {
+                if (str_starts_with($key, 'massif_settings/') || ($key === 'content/edit' && rex_request('function', 'string') === 'edit')) {
                     $ep->setSubject($ep->getSubject());
                     return;
                 }
