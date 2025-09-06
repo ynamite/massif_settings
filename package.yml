@@ -17,6 +17,7 @@ page:
       fields:
         [
           { name: 'firma', label: 'Name' },
+          { name: 'firma_zusatz', label: 'Zusatz' },
           { name: 'strasse', label: 'Strasse' },
           { name: 'plz', label: 'PLZ' },
           { name: 'ort', label: 'Ort' },
