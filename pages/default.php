@@ -7,8 +7,6 @@ $package = $this->getProperty('package') . '-';
 $pages = $this->getProperty('page');
 $be_page = \rex_be_controller::getCurrentPageObject();
 
-$fields = $pages['subpages'][$key]['fields'];
-
 $form = ConfigForm::getForm(package: $this->getProperty('package'), subpage: $key);
 
 $content = '';
