@@ -3,6 +3,8 @@
 namespace Ynamite\MassifSettings;
 
 use rex_addon;
+use rex_extension;
+use rex_extension_point;
 use rex_string;
 use rex_Formatter;
 use Ynamite\Massif\Utils as MassifUtils;
@@ -50,6 +52,8 @@ class Utils
         $configData = $addon->getConfig();
 
         $additionalFields = ['m2' => 'm&sup2;', 'm3' => 'm&sup3;'];
+        $customFields = [];
+        $customFields = rex_extension::registerPoint(new rex_extension_point('MASSIF_SETTINGS_CUSTOM_FIELDS', $customFields));
 
         $data = [];
 
@@ -78,6 +82,10 @@ class Utils
 
         foreach ($additionalFields as $key => $val) {
             $data[$key] = $val;
+        }
+
+        foreach ($customFields as $key) {
+            $data[$key] = $configData[$key] ?? '';
         }
 
         self::$formattedData = $data;
