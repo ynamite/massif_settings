@@ -5,6 +5,8 @@ supportpage: https://massif.ch/
 
 requires:
   redaxo: '^5.0'
+  php: '>=7.4'
+  massif: '^1.0.0'
 
 page:
   title: Stammdaten
@@ -16,32 +18,50 @@ page:
       icon: 'fa fa-map-pin'
       fields:
         [
-          { name: 'firma', label: 'Name' },
-          { name: 'firma_zusatz', label: 'Zusatz' },
-          { name: 'strasse', label: 'Strasse' },
-          { name: 'plz', label: 'PLZ' },
-          { name: 'ort', label: 'Ort' },
-          { name: 'kanton_code', label: 'Kanton-Code' },
-          { name: 'land', label: 'Land' },
-          { name: 'land_code', label: 'Land-Code' },
-          { name: 'e-mail', label: 'E-Mail' },
-          { name: 'phone', label: 'Telefon' }
+          { name: 'firma', label: 'Name', notice: '{{address_firma}}' },
+          {
+            name: 'firma_zusatz',
+            label: 'Zusatz',
+            notice: '{{address_firma_zusatz}}'
+          },
+          { name: 'strasse', label: 'Strasse', notice: '{{address_strasse}}' },
+          { name: 'plz', label: 'PLZ', notice: '{{address_plz}}' },
+          { name: 'ort', label: 'Ort', notice: '{{address_ort}}' },
+          {
+            name: 'kanton_code',
+            label: 'Kanton-Code',
+            notice: '{{address_kanton_code}}'
+          },
+          { name: 'land', label: 'Land', notice: '{{address_land}}' },
+          {
+            name: 'land_code',
+            label: 'Land-Code',
+            notice: '{{address_land_code}}'
+          },
+          { name: 'e-mail', label: 'E-Mail', notice: '{{address_email}}' },
+          { name: 'phone', label: 'Telefon', notice: '{{address_phone}}' }
         ]
     google:
       title: 'Google'
       icon: 'fa fa-location-dot'
       fields:
         [
-          { name: 'maps_link', label: 'Google Maps Link' },
+          {
+            name: 'maps_link',
+            label: 'Google Maps Link',
+            notice: '{{google_maps_link}}'
+          },
           {
             name: 'geo lat.',
             label: 'Geo Lat.',
-            style_input: 'font-weight:bold'
+            style_input: 'font-weight:bold',
+            notice: '{{google_geo_lat}}'
           },
           {
             name: 'geo long.',
             label: 'Geo Long.',
-            style_input: 'font-weight:bold'
+            style_input: 'font-weight:bold',
+            notice: '{{google_geo_long}}'
           }
         ]
     social:
@@ -49,8 +69,12 @@ page:
       icon: 'fa fa-linkedin'
       fields:
         [
-          { name: 'instagram', label: 'Instagram' },
-          { name: 'linkedin', label: 'LinkedIn' }
+          {
+            name: 'instagram',
+            label: 'Instagram',
+            notice: '{{social_instagram}}'
+          },
+          { name: 'linkedin', label: 'LinkedIn', notice: '{{social_linkedin}}' }
         ]
     settings:
       title: 'Einstellungen'
