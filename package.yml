@@ -38,8 +38,18 @@ page:
             label: 'Land-Code',
             notice: '{{address_land_code}}'
           },
-          { name: 'e-mail', label: 'E-Mail', notice: '{{address_email}}' },
-          { name: 'phone', label: 'Telefon', notice: '{{address_phone}}' }
+          {
+            name: 'e-mail',
+            label: 'E-Mail',
+            formatter: 'email',
+            notice: '{{address_email}}'
+          },
+          {
+            name: 'phone',
+            label: 'Telefon',
+            formatter: 'phone',
+            notice: '{{address_phone}}'
+          }
         ]
     google:
       title: 'Google'
@@ -72,9 +82,15 @@ page:
           {
             name: 'instagram',
             label: 'Instagram',
-            notice: '{{social_instagram}}'
+            notice: '{{social_instagram}}',
+            formatter: 'url'
           },
-          { name: 'linkedin', label: 'LinkedIn', notice: '{{social_linkedin}}' }
+          {
+            name: 'linkedin',
+            label: 'LinkedIn',
+            notice: '{{social_linkedin}}',
+            formatter: 'url'
+          }
         ]
     settings:
       title: 'Einstellungen'

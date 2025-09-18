@@ -72,7 +72,9 @@ class Utils
 
                 $data[$id] = $val;
 
-                $valFormatted = self::getFormattedData($f, $val, $data);
+                if (!isset($field['formatter']))
+                    continue;
+                $valFormatted = self::getFormattedData($field['formatter'], $f, $val);
 
                 if ($valFormatted) {
                     $data[$id . '_formatted'] = $valFormatted;
@@ -84,8 +86,18 @@ class Utils
             $data[$key] = $val;
         }
 
-        foreach ($customFields as $key) {
-            $data[$key] = $configData[$key] ?? '';
+        foreach ($customFields as $entry) {
+            if (!is_array($entry)) {
+                $data[$entry] = $configData[$entry] ?? '';
+                continue;
+            }
+            $data[$entry['name']] = $configData[$entry['name']] ?? '';
+            if (!isset($entry['formatter']))
+                continue;
+            $valFormatted = self::getFormattedData($entry['formatter'], $entry['name'], $data[$entry['name']]);
+            if ($valFormatted) {
+                $data[$entry['name'] . '_formatted'] = $valFormatted;
+            }
         }
 
         self::$formattedData = $data;
@@ -93,30 +105,24 @@ class Utils
         return $data;
     }
 
-    private static function getFormattedData(string $key, string $value): string
+    private static function getFormattedData(string $formatter, string $key, string $value): string
     {
         $out = '';
         if (!$value) {
             return $out;
         }
-        switch ($key) {
+        switch ($formatter) {
             case 'phone':
                 $out = '<a href="tel:' . MassifUtils\Format::phone($value) . '" data-no-swup class="contact-link phone-number">' . $value . '</a>';
                 break;
             case 'fax':
                 $out = '<a href="tel:' . MassifUtils\Format::phone($value) . '" data-no-swup class="contact-link phone-number fax-number">Fax ' . $value . '</a>';
                 break;
-            case 'e_mail':
+            case 'email':
                 $out = '<a href="mailto:' . $value . '" data-no-swup class="contact-link e-mail">' . $value . '</a>';
                 break;
-            case 'instagram':
-                $out = '<a href="' . $value . '" target="_blank" data-no-swup class="social-link instagram" rel="noreferrer">Instagram</a>';
-                break;
-            case 'linkedin':
-                $out = '<a href="' . $value . '" target="_blank" data-no-swup class="social-link linkedin" rel="noreferrer">Linkedin</a>';
-                break;
-            case 'xing':
-                $out = '<a href="' . $value . '" target="_blank" data-no-swup class="social-link xing" rel="noreferrer">Xing</a>';
+            case 'url':
+                $out = '<a href="' . $value . '" target="_blank" data-no-swup class="url" rel="noreferrer">Instagram</a>';
                 break;
         }
         return $out;
