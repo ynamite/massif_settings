@@ -46,6 +46,7 @@ Es können auch eigene Seiten und Felder über Extensionpoints hinzugefügt werd
         'foo' => 'bar',
         'baz' => 'qux',
       ],
+      'formatter' => 'email', // Formatierung (phone, fax, email, url), wenn gesetzt wird zusätzlich ein feld_name_formatted Eintrag mit dem formatierten Wert erstellt
     ];
     return $fields;
   });
@@ -56,7 +57,22 @@ Es können auch eigene Seiten und Felder über Extensionpoints hinzugefügt werd
 ```php
 rex_extension::register('MASSIF_SETTINGS_CUSTOM_FIELDS', function (rex_extension_point $ep) {
   $fields = $ep->getSubject();
-  $fields[] = 'feld_name';
+  // einfache Variante:
+  $fields = [
+    ...$fields,
+    ...[
+      'feld_name'
+    ]
+  ];
+  // oder so (auch beide Varianten kombinierbar):
+  $fields = [
+    ...$fields,
+    ...[
+      ['name' => 'feld_name'],
+      ['name' => 'feld_name_email', 'formatter' => 'email'],
+      ['name' => 'feld_name_phone', 'formatter' => 'phone']
+    ]
+  ];
   $ep->setSubject($fields);
 }, rex_extension::EARLY);
 ```
