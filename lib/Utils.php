@@ -63,6 +63,7 @@ class Utils
             foreach ($fields as $field) {
 
                 $f = rex_string::normalize($field['name']);
+                $label = $field['label'] ?? '';
                 $id = $ns . '_' . $f;
 
                 if (!isset($configData[$id]))
@@ -74,7 +75,7 @@ class Utils
 
                 if (!isset($field['formatter']))
                     continue;
-                $valFormatted = self::getFormattedData($field['formatter'], $f, $val);
+                $valFormatted = self::getFormattedData($field['formatter'], $f, $val, $label);
 
                 if ($valFormatted) {
                     $data[$id . '_formatted'] = $valFormatted;
@@ -94,7 +95,7 @@ class Utils
             $data[$entry['name']] = $configData[$entry['name']] ?? '';
             if (!isset($entry['formatter']))
                 continue;
-            $valFormatted = self::getFormattedData($entry['formatter'], $entry['name'], $data[$entry['name']]);
+            $valFormatted = self::getFormattedData($entry['formatter'], $entry['name'], $data[$entry['name']], $data[$entry['label'] ?? '']);
             if ($valFormatted) {
                 $data[$entry['name'] . '_formatted'] = $valFormatted;
             }
@@ -105,7 +106,7 @@ class Utils
         return $data;
     }
 
-    private static function getFormattedData(string $formatter, string $key, string $value): string
+    private static function getFormattedData(string $formatter, string $key, string $value, string $label): string
     {
         $out = '';
         if (!$value) {
@@ -122,7 +123,7 @@ class Utils
                 $out = '<a href="mailto:' . $value . '" data-no-swup class="contact-link e-mail">' . $value . '</a>';
                 break;
             case 'url':
-                $out = '<a href="' . $value . '" target="_blank" data-no-swup class="url" rel="noreferrer">Instagram</a>';
+                $out = '<a href="' . $value . '" target="_blank" data-no-swup class="url" rel="noreferrer">' . $label . '</a>';
                 break;
         }
         return $out;
