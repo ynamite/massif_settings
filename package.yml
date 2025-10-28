@@ -102,5 +102,12 @@ page:
             label: 'Akzentfarbe',
             class: 'minicolors-massif',
             default: '#ff269e'
+          },
+          {
+            name: 'enable_google_maps',
+            label: 'Google Maps aktivieren',
+            type: 'checkbox',
+            options: [{ label: 'ja', value: 1 }],
+            notice: '{{enable_google_maps_notice}}'
           }
         ]
