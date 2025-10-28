@@ -95,7 +95,7 @@ class Utils
             $data[$entry['name']] = $configData[$entry['name']] ?? '';
             if (!isset($entry['formatter']))
                 continue;
-            $valFormatted = self::getFormattedData($entry['formatter'], $entry['name'], $data[$entry['name']], $data[$entry['label'] ?? '']);
+            $valFormatted = self::getFormattedData($entry['formatter'], $entry['name'], $data[$entry['name']], $data[$entry['name'] ?? '']);
             if ($valFormatted) {
                 $data[$entry['name'] . '_formatted'] = $valFormatted;
             }
