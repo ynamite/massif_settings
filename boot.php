@@ -14,7 +14,7 @@ if ($search_it_indexer == "" && $search_it_highlighter != "") {
     $search_it_indexer = 'search_it_highlighter';
 }
 
-if (/*!rex::isBackend() &&*/$search_it_indexer == "") {
+if ($search_it_indexer == "") {
 
     rex_extension::register('OUTPUT_FILTER', function (\rex_extension_point $ep) {
 
