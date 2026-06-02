@@ -2,7 +2,7 @@
   "name": "ynamite/massif-settings",
   "autoload": {
     "psr-4": {
-      "Ynamite\\MassifSettings\\": "src/lib/"
+      "Ynamite\\MassifSettings\\": "lib/"
     }
   }
 }

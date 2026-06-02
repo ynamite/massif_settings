@@ -1,0 +1,73 @@
+# massif_settings — Feldkonfiguration
+#
+# Diese Datei wird beim Aktivieren des Addons nach
+# redaxo/data/addons/massif_settings/fields.yml kopiert.
+# Anschliessend gehört die Datei zum Projekt und kann frei bearbeitet werden;
+# Updates des Addons überschreiben sie nicht.
+#
+# Schema:
+#   subpages:
+#     <key>:
+#       title: ...
+#       icon:  ...
+#       priority: 100         # optional, kleiner = früher
+#       fields:
+#         - name: ...         # erforderlich
+#           label: ...
+#           type: text|textarea|checkbox|rex_media   # default: text
+#           formatter: phone|fax|email|url           # optional
+#           default: ...                             # optional, einmaliger Initialwert
+#           notice: '{{...}}'                        # Hinweistext/Platzhalter
+#           active: false                            # Feld ausblenden
+#           options: [{ label: ..., value: ... }]    # für checkbox
+#
+#   placeholders:
+#     - name: foo                # Platzhalter, kein Backend-Input
+#       package: foo_addon       # default: massif_settings
+#       key: foo                 # default: name
+#       formatter: url
+
+subpages:
+  address:
+    title: Stammdaten
+    icon: fa fa-map-pin
+    fields:
+      - { name: firma, label: Name, notice: '{{address_firma}}' }
+      - { name: firma_zusatz, label: Zusatz, notice: '{{address_firma_zusatz}}' }
+      - { name: strasse, label: Strasse, notice: '{{address_strasse}}' }
+      - { name: plz, label: PLZ, notice: '{{address_plz}}' }
+      - { name: ort, label: Ort, notice: '{{address_ort}}' }
+      - { name: kanton_code, label: Kanton-Code, notice: '{{address_kanton_code}}' }
+      - { name: land, label: Land, notice: '{{address_land}}' }
+      - { name: land_code, label: Land-Code, notice: '{{address_land_code}}' }
+      - { name: e-mail, label: E-Mail, formatter: email, notice: '{{address_email}}' }
+      - { name: phone, label: Telefon, formatter: phone, notice: '{{address_phone}}' }
+
+  google:
+    title: Google
+    icon: fa fa-location-dot
+    fields:
+      - { name: maps_link, label: Google Maps Link, notice: '{{google_maps_link}}' }
+      - { name: 'geo lat.', label: Geo Lat., style: 'font-weight:bold', notice: '{{google_geo_lat}}' }
+      - { name: 'geo long.', label: Geo Long., style: 'font-weight:bold', notice: '{{google_geo_long}}' }
+
+  social:
+    title: Social Media
+    icon: fa fa-linkedin
+    fields:
+      - { name: instagram, label: Instagram, formatter: url, notice: '{{social_instagram}}' }
+      - { name: linkedin, label: LinkedIn, formatter: url, notice: '{{social_linkedin}}' }
+
+  settings:
+    title: Einstellungen
+    icon: fa fa-cog
+    fields:
+      - { name: accent_color, label: Akzentfarbe, class: minicolors-massif, default: '#ff269e' }
+      - name: enable_google_maps
+        label: Google Maps aktivieren
+        type: checkbox
+        options:
+          - { label: ja, value: 1 }
+        notice: '{{enable_google_maps_notice}}'
+
+placeholders: []

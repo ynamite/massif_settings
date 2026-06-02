@@ -3,13 +3,10 @@
 Das Addon liefert Einstellungsseiten für Stammdaten und erlaubt die einfache Erstellung von weiteren Backend-Einstellungen für REDAXO Installationen.
 Weiterhin liefert das Addon über `massif_settings\Seo::getTags()` eine einfache Möglichkeit SEO-Tags in Templates zu generieren (`yrewrite` und `redaxo_url` kompatibel).
 
-Einstellungen werden in der rex_config-Tabelle gespeichert und können über rex_config::get('massif_settings', 'einstellung') abgerufen werden.
+Einstellungen werden in der `rex_config`-Tabelle gespeichert und können über `rex_config::get('massif_settings', 'einstellung')` abgerufen werden.
 Zudem bietet das Addon einige Utility-Funktionen um Einstellungen abzufragen und Platzhalter, für diese Variablen, in Templates zu ersetzen.
 
-Die Eingabefelder für die Einstellungen werden in der package.yml Datei des Addons definiert.
-Das Addon erstellt automatisch eine Seite im Backend mit den definierten Eingabefeldern.
-
-Es können auch eigene Seiten und Felder über Extensionpoints hinzugefügt werden.
+Ab Version `1.1.0` werden die Einstellungsfelder in einer YAML-Datei im Projekt-Datenverzeichnis konfiguriert. Beim ersten Aktivieren des Addons wird eine Default-Datei nach `redaxo/data/addons/massif_settings/fields.yml` kopiert. Diese Datei gehört dem Projekt und wird durch Addon-Updates nicht überschrieben.
 
 ## Voraussetzungen
 
@@ -17,65 +14,84 @@ Es können auch eigene Seiten und Felder über Extensionpoints hinzugefügt werd
 - PHP 7.4 oder höher
 - [massif Addon](https://github.com/ynamite/redaxo_massif) Addon Version 1.0.0 oder höher
 
-## Eigene Seite hinzufügen
+## Eigene Felder und Seiten registrieren
 
-```php
-  rex_extension::register('PAGES_PREPARED', function (rex_extension_point $ep) {
-    /** @var rex_be_page_main $pageObject */
-    $pageObject = \rex_be_controller::getPageObject('massif_settings');
-    $newPage = (new rex_be_page('test', 'Testpage'));
-    $pageObject->addSubpage($newPage);
-  });
+### Empfohlen: `fields.yml` bearbeiten
+
+Datei: `redaxo/data/addons/massif_settings/fields.yml`
+
+```yaml
+subpages:
+  address:
+    title: Stammdaten
+    icon: fa fa-map-pin
+    fields:
+      - { name: firma, label: Name, notice: '{{address_firma}}' }
+      - { name: phone, label: Telefon, formatter: phone, notice: '{{address_phone}}' }
+      # neues Feld:
+      - { name: phone_emergency, label: 'Notfall-Telefon', formatter: phone }
+      # Default-Feld ausblenden:
+      - { name: linkedin, active: false }
+
+  # neue Subpage – erscheint automatisch im Backend-Menü
+  newsletter:
+    title: Newsletter
+    icon: fa fa-envelope
+    priority: 50
+    fields:
+      - { name: mailchimp_id, label: 'Mailchimp Listen-ID' }
+
+placeholders:
+  # reine Frontend-Platzhalter (kein Backend-Input)
+  - { name: foo_token, package: foo_addon, key: token, formatter: url }
 ```
 
-## Eigene Felder hinzufügen
+Unterstützte Feld-Keys: `name` (erforderlich), `label`, `type` (`text` (default), `textarea`, `checkbox`, `rex_media`), `options` (für Checkbox), `class`, `rows`, `style`, `data` (key-value), `attributes` (key-value), `notice` (Hinweistext, akzeptiert `{{platzhalter}}`), `active` (false versteckt das Feld), `default` (einmaliger Initialwert beim Bootstrap), `formatter` (`phone` | `fax` | `email` | `url`), `priority` (kleiner = früher, default `100`), `placeholder` (auf `false` setzen, um ein Feld nicht als `{{...}}` verfügbar zu machen), `placeholderAlias`.
+
+### Erweitert: PHP-API für dynamische Fälle
+
+Für Szenarien, die YAML nicht abbilden kann (Callable-Formatter, Resolver-Platzhalter, bedingte Registrierung), nutze den Extensionpoint `MASSIF_SETTINGS_REGISTER`:
 
 ```php
-  rex_extension::register('MASSIF_CONFIG_FORM_FIELDS', function (rex_extension_point $ep) {
-    $fields = $ep->getSubject();
-    $fields[] = [
-      'name' => 'feld_name',
-      'label' => 'Feld Label',
-      'type' => 'text', // text, textarea, rex_media
-      'class' => 'form-control',
-      'active' => true, // false = ausgeblendet
-      'rows' => 5, // nur für textarea
-      'style' => 'height: 100px;',
-      'notice' => 'Dies ist ein neu hinzugefügtes Feld über eine Extension.', // Hinweistext
-      'data' => [ // data-Attribute
-        'foo' => 'bar',
-        'baz' => 'qux',
-      ],
-      'formatter' => 'email', // Formatierung (phone, fax, email, url), wenn gesetzt wird zusätzlich ein feld_name_formatted Eintrag mit dem formatierten Wert erstellt
-    ];
-    return $fields;
-  });
+use Ynamite\MassifSettings\Registry;
+
+rex_extension::register('MASSIF_SETTINGS_REGISTER', function () {
+  // Feld mit eigenem Formatter
+  Registry::field('address', [
+    'name'      => 'phone_emergency',
+    'label'     => 'Notfall-Telefon',
+    'formatter' => fn ($v) => '<a href="tel:' . preg_replace('/\s+/', '', $v) . '">' . $v . '</a>',
+  ]);
+
+  // Platzhalter mit dynamischem Resolver
+  Registry::placeholder('current_year', [
+    'resolver' => fn () => (string) date('Y'),
+  ]);
+
+  // Default-Feld entfernen
+  Registry::removeField('social', 'linkedin');
+});
 ```
 
-## Eigene Felder im Frontend automatisch ersetzen und für Utils verfügbar machen:
+Verfügbare API: `Registry::subpage()`, `Registry::field()`, `Registry::placeholder()`, `Registry::removeSubpage()`, `Registry::removeField()`, `Registry::disableField()`, `Registry::removePlaceholder()`.
+
+### Eigene Backend-Seite hinzufügen (außerhalb von `fields.yml`)
+
+Reine Custom-Seiten ohne ConfigForm können wie zuvor über `PAGES_PREPARED` ergänzt werden:
 
 ```php
-rex_extension::register('MASSIF_SETTINGS_CUSTOM_FIELDS', function (rex_extension_point $ep) {
-  $fields = $ep->getSubject();
-  // einfache Variante:
-  $fields = [
-    ...$fields,
-    ...[
-      'feld_name'
-    ]
-  ];
-  // oder so (auch beide Varianten kombinierbar):
-  $fields = [
-    ...$fields,
-    ...[
-      ['name' => 'feld_name'],
-      ['name' => 'feld_name_email', 'formatter' => 'email'],
-      ['name' => 'feld_name_phone', 'formatter' => 'phone']
-    ]
-  ];
-  $ep->setSubject($fields);
-}, rex_extension::EARLY);
+rex_extension::register('PAGES_PREPARED', function () {
+  $pageObject = \rex_be_controller::getPageObject('massif_settings');
+  $pageObject->addSubpage(new rex_be_page('test', 'Testpage'));
+});
 ```
+
+### Legacy-Extensionpoints
+
+Werden weiterhin unterstützt, neue Integrationen sollten aber `MASSIF_SETTINGS_REGISTER` bzw. `fields.yml` verwenden:
+
+- `MASSIF_CONFIG_FORM_FIELDS` (im Parent-Addon `massif`) – fügt Felder direkt in das ConfigForm ein. Wird intern weiterhin gefeuert.
+- `MASSIF_SETTINGS_CUSTOM_FIELDS` – meldet `rex_config`-Keys als Platzhalter an. Wird beim Bootstrap automatisch in `Registry::placeholder()`-Aufrufe übersetzt.
 
 ---
 
