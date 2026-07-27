@@ -95,6 +95,15 @@ class Seo
 				if ($seoTitle) {
 					$titleValues[] = $seoTitle;
 				}
+				if ($seoTitle !== $manager->getSeoTitle()) {
+					if ('' !== trim((string) $seoTitle)) {
+						$seoTitle = self::normalize($seoTitle);
+						$tags['og:title'] = '<meta property="og:title" content="' . $seoTitle . '" />';
+						$tags['twitter:title'] = '<meta name="twitter:title" content="' . $seoTitle . '" />';
+					} else {
+						unset($tags['og:title'], $tags['twitter:title']);
+					}
+				}
 				if ($article) {
 					$domain = rex_yrewrite::getDomainByArticleId($article->getId());
 					$title = $domain->getTitle();
