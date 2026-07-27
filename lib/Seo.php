@@ -11,6 +11,8 @@ use rex_media;
 use rex_path;
 use rex_yrewrite;
 
+use KLXM\YformLangFields\LangHelper;
+
 use function getimagesize;
 
 class Seo
@@ -89,8 +91,9 @@ class Seo
 				$article = rex_article::get($manager->getArticleId());
 				$title = strip_tags($tags['title']);
 
-				if ($manager->getSeoTitle()) {
-					$titleValues[] = $manager->getSeoTitle();
+				$seoTitle = self::resolveLangValue($manager->getSeoTitle());
+				if ($seoTitle) {
+					$titleValues[] = $seoTitle;
 				}
 				if ($article) {
 					$domain = rex_yrewrite::getDomainByArticleId($article->getId());
@@ -105,6 +108,18 @@ class Seo
 				}
 
 				$tags['title'] = sprintf('<title>%s</title>', $title);
+				$rawDescription = $manager->getSeoDescription();
+				$seoDescription = self::resolveLangValue($rawDescription);
+				if ($seoDescription !== $rawDescription) {
+					if ('' !== trim((string) $seoDescription)) {
+						$seoDescription = self::normalize($seoDescription);
+						$tags['description'] = '<meta name="description" content="' . $seoDescription . '" />';
+						$tags['og:description'] = '<meta property="og:description" content="' . $seoDescription . '" />';
+						$tags['twitter:description'] = '<meta name="twitter:description" content="' . $seoDescription . '" />';
+					} else {
+						unset($tags['description'], $tags['og:description'], $tags['twitter:description']);
+					}
+				}
 				// order tags array by array keys
 				ksort($tags);
 				$ep->setSubject($tags);
@@ -112,7 +127,7 @@ class Seo
 
 			$tagsHtml = $seo->getTags();
 
-			$description = self::normalize($manager->getSeoDescription());
+			$description = self::normalize(self::resolveLangValue($manager->getSeoDescription()));
 		}
 
 		$full_url = rex_yrewrite::getFullPath();
@@ -165,5 +180,14 @@ class Seo
 	{
 		$string = rex_escape(strip_tags($string));
 		return str_replace(["\n", "\r"], [' ', ''], $string);
+	}
+
+	protected static function resolveLangValue($value)
+	{
+		if (is_string($value) && class_exists(LangHelper::class)
+			&& [] !== LangHelper::normalizeLanguageData($value)) {
+			return LangHelper::getValueForLanguage($value, rex_clang::getCurrentId());
+		}
+		return $value;
 	}
 }
