@@ -89,7 +89,7 @@ class Seo
 
 				$titleValues = [];
 				$article = rex_article::get($manager->getArticleId());
-				$title = strip_tags($tags['title']);
+				$title = strip_tags($tags['title'] ?? '');
 
 				$seoTitle = self::resolveLangValue($manager->getSeoTitle());
 				if ($seoTitle) {
@@ -136,7 +136,7 @@ class Seo
 
 			$tagsHtml = $seo->getTags();
 
-			$description = self::normalize(self::resolveLangValue($manager->getSeoDescription()));
+			$description = self::normalize(self::resolveLangValue($manager->getSeoDescription()) ?? '');
 		}
 
 		$full_url = rex_yrewrite::getFullPath();
