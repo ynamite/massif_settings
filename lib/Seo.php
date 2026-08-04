@@ -193,9 +193,11 @@ class Seo
 
 	protected static function resolveLangValue($value)
 	{
+		// json array = lang field value; also matches '[]' so empty lang values resolve to ''
 		if (is_string($value) && class_exists(LangHelper::class)
-			&& [] !== LangHelper::normalizeLanguageData($value)) {
-			return LangHelper::getValueForLanguage($value, rex_clang::getCurrentId());
+			&& is_array(json_decode($value, true))) {
+			$resolved = LangHelper::getValueForLanguage($value, rex_clang::getCurrentId());
+			return '' !== $resolved ? $resolved : LangHelper::getValueForLanguage($value, rex_clang::getStartId());
 		}
 		return $value;
 	}
